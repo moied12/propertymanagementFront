@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
-import { login,loginErrorReset } from '../../store/auth/slice';
+import { register,registerErrorReset } from '../../store/auth/slice';
 
-import { Form, Input, notification } from 'antd';
+import { Form, Input, InputNumber, notification } from 'antd';
 import { connect } from 'react-redux';
 
-class Login extends Component {
+class Register extends Component {
     constructor(props) {
         super(props);
         this.state = {
             email : "",
-            password : ""
+            password : "",
+            phone:0,
+            name:""
         };
         this.handleChange = this.handleChange.bind(this);
     }
@@ -23,17 +25,17 @@ class Login extends Component {
         return false;
     }
 
-    handleLoginSubmit = e => {
+    handleRegisterSubmit = e => {
         let userdetails = JSON.parse(JSON.stringify(this.state));
-        this.props.dispatch(login(userdetails));
+        this.props.dispatch(register(userdetails));
     };
     handleChange = e => {
         e.preventDefault();
-        const { name, value } = e.target;
+        const { name, value, } = e.target;
         this.setState({ [name]: value });
     };
     componentWillUnmount(){
-        this.props.dispatch( loginErrorReset());
+        this.props.dispatch( registerErrorReset());
        }
 
 
@@ -45,19 +47,14 @@ class Login extends Component {
                 <div className="container">
                     <Form
                         className="ps-form--account"
-                        onFinish={this.handleLoginSubmit.bind(this)}>
+                        onFinish={this.handleRegisterSubmit.bind(this)}>
                         <ul className="ps-tab-list">
-                        <li >
-                                <Link href="/">
-                                    <a>Index</a>
-                                </Link>
-                            </li>
-                            <li className="active">
+                            <li>
                                 <Link href="/account/login">
                                     <a>Login</a>
                                 </Link>
                             </li>
-                            <li>
+                            <li  className="active">
                                 <Link href="/account/register">
                                     <a>Register</a>
                                 </Link>
@@ -68,9 +65,10 @@ class Login extends Component {
                                 <h5>Log In Your Account</h5>
                                 <div className="form-group">
                                     <Form.Item
-                                        name="username"
+                                        name="email"
                                         rules={[
                                             {
+                                                type: "email",
                                                 required: true,
                                                 message:
                                                     'Please input your email!',
@@ -81,7 +79,7 @@ class Login extends Component {
                                         value={this.state.email}
                                             className="form-control"
                                             type="text"
-                                            placeholder="Username or email address"
+                                            placeholder="Email address"
                                             onChange={this.handleChange}    
 
                                         />
@@ -104,6 +102,47 @@ class Login extends Component {
                                             className="form-control"
                                             type="password"
                                             placeholder="Password..."
+                                        />
+                                    </Form.Item>
+                                </div>
+                                <div className="form-group">
+                                    <Form.Item
+                                        name="phone"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message:
+                                                    'Please input your number!',
+                                                    pattern: new RegExp(/^[0-9]+$/)
+                                            },
+                                        ]}>
+                                        <Input
+                                        name='phone'
+                                        value={this.state.phone}
+                                        onChange={this.handleChange}   
+                                            className="form-control"
+                                            type="phone"
+                                            placeholder="Phone..."
+                                        />
+                                    </Form.Item>
+                                </div>
+                                <div className="form-group">
+                                    <Form.Item
+                                        name="name"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message:
+                                                    'Please input your Name!',
+                                            },
+                                        ]}>
+                                        <Input
+                                        name='name'
+                                        value={this.state.password}
+                                        onChange={this.handleChange}   
+                                            className="form-control"
+                                            type="name"
+                                            placeholder="Name..."
                                         />
                                     </Form.Item>
                                 </div>
@@ -144,4 +183,4 @@ class Login extends Component {
 const mapStateToProps = state => {
     return state.auth;
 };
-export default connect(mapStateToProps)(Login);
+export default connect(mapStateToProps)(Register);

@@ -3,7 +3,16 @@ import NextApp from "next/app";
 import withReduxStore from '../lib/with-redux-store'
 import { Provider } from 'react-redux'
 
+import { PersistGate } from 'redux-persist/integration/react';
+
+import { persistStore } from 'redux-persist'
+
 class App extends NextApp {
+  
+  constructor(props) {
+    super(props);
+    this.persistor = persistStore(props.reduxStore);
+}
   static async getInitialProps({ Component, ctx }) {
     let pageProps = {};
 
@@ -21,7 +30,11 @@ class App extends NextApp {
 
     return (
       <Provider store={reduxStore}>
-        <Component {...pageProps} />
+        <PersistGate
+                    loading={<Component {...pageProps} />}
+                    persistor={this.persistor}>
+                    <Component {...pageProps} />
+                </PersistGate>
       </Provider>
     );
   }

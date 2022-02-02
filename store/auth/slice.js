@@ -7,6 +7,13 @@ initialState:{
     error:'false',
 },
 reducers : {
+register(){},
+registerError: (state, action) => ({
+    ...state,
+    ...{ error: action.payload },}),
+registerErrorReset: (state, action) => ({
+    ...state,
+    ...{ error: 'false' },}),
 login(){},
 logOut(){},
 logOutSuccess:(state,action)=>({
@@ -24,11 +31,11 @@ loginError: (state, action) => ({
 loginErrorReset: (state, action) => ({
     ...state,
     ...{ error: 'false' },}),
-    
 }
+
 
 });
 
-export const {login,logOut,logOutSuccess,loginSuccess,loginError,loginErrorReset} = authSlice.actions;
+export const {register,login,logOut,logOutSuccess,loginSuccess,loginError,loginErrorReset,registerError,registerErrorReset} = authSlice.actions;
 export default authSlice.reducer;
 

@@ -1,36 +1,61 @@
 import axios from 'axios';
 import  { apiUrl } from './Repository';
 
-
 class AuthRespository {
     constructor(callback) {
         this.callback = callback;
     }
 
     async loginRequest(payload) {
-        const reponse  = await axios.post(`${apiUrl}/user/login`, 
+      
+      var cookie = require('cookie-cutter');
+      const reponse  = await axios.post(`${apiUrl}/user/login`, 
        payload,
        { 
-        "Access-Control-Allow-Origin": "http://localhost:3000/account/login",
+        "origin": "http://localhost:3001",
        'Content-Type':'application/json',
-      //  withCredentials: true, 
-      //  credentials: 'include'
+       'Access-Control-Allow-Credentials': true,
+      credentials: true,
     }).then(res => {
-      console.log(res.data);
+      var now = new Date();
+      var time = now.getTime();
+      var expireTime = time + 24*60*60*7*1000;
+      now.setTime(expireTime);
+      cookie.set('access-token', res.data,{
+        expires: now.toUTCString(),path:'/'
+      })
         return res.data
       });
       return reponse;
     }
 
     async logoutRequest(){
-        const reponse  = await axios.delete(`${apiUrl}/user/logout`, 
-        { "Access-Control-Allow-Origin": "*"
-        ,'Content-Type':'application/json'
-     }).then(res => {
-         return res.data
-       });
-       return reponse;
+      var cookie = require('cookie-cutter');
+      // cookie.set('access-token', "")
+      var now = new Date();
+      var time = now.getTime();
+      var expireTime = time;
+      now.setTime(expireTime);
+      cookie.set('access-token',"", {expires: now.toUTCString(),path:'/'});
+      return true
      }  
+
+
+
+async registerRequest(payload) {
+      const reponse  = await axios.post(`${apiUrl}/user/register`, 
+     payload,
+     { 
+      "Access-Control-Allow-Origin": "http://localhost:3000/account/register",
+     'Content-Type':'application/json',
+    //  withCredentials: true, 
+    //  credentials: 'include'
+  }).then(res => {
+    console.log(res.data);
+      return res.data
+    });
+    return reponse;
+  }
 }
 
 export default new AuthRespository();

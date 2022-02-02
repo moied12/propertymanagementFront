@@ -4,9 +4,10 @@ import rootSaga from './saga';
 import createSagaMiddleware from 'redux-saga';
 import { applyMiddleware, createStore } from 'redux'
 import { createWrapper } from 'next-redux-wrapper'
-
-
-
+import { execOnce } from 'next/dist/next-server/lib/utils';
+import storage from 'redux-persist/lib/storage'
+import { persistStore, persistReducer } from 'redux-persist'
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
 
 const bindMiddleware = (middleware) => {
   if (process.env.NODE_ENV !== 'production') {
@@ -15,13 +16,23 @@ const bindMiddleware = (middleware) => {
   }
   return applyMiddleware(...middleware)
 }
-export const initializeStore = (context) => {
+const persistConfig = {
+  key: 'propmanagement',
+  storage:storage,
+};
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+export const initializeStore = (initialState) => {
   const sagaMiddleware = createSagaMiddleware()
-  const store = createStore(rootReducer, bindMiddleware([sagaMiddleware]))
+  const store = configureStore({
+        reducer:persistedReducer,
+        pre:initialState,
+        middleware:[...getDefaultMiddleware({thunk:false,serializableCheck:false}),sagaMiddleware]
 
-  store.sagaTask = sagaMiddleware.run(rootSaga)
-
-  return store
+    });
+    store.sagaTask = sagaMiddleware.run(rootSaga)
+    return store
 }
 
-export const wrapper = createWrapper(initializeStore, { debug: false })
+// export const wrapper = createWrapper(initializeStore, { debug: false })
