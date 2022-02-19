@@ -5,6 +5,7 @@ name:  'auth',
 initialState:{
     isLoggedIn: false,
     error:'false',
+    user:null,
 },
 reducers : {
 register(){},
@@ -31,11 +32,19 @@ loginError: (state, action) => ({
 loginErrorReset: (state, action) => ({
     ...state,
     ...{ error: 'false' },}),
+
+
+getUser(){},
+getUserSuccess:(state,action)=>({
+    ...state,
+    ...{ user: action.payload},
+}),
 }
 
 
 });
 
-export const {register,login,logOut,logOutSuccess,loginSuccess,loginError,loginErrorReset,registerError,registerErrorReset} = authSlice.actions;
+export const {register,login,logOut,logOutSuccess,loginSuccess,loginError,loginErrorReset,registerError,registerErrorReset,
+getUser,getUserSuccess} = authSlice.actions;
 export default authSlice.reducer;
 

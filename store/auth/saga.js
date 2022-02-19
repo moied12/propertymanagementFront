@@ -1,23 +1,10 @@
 import { all, put, takeEvery,call } from 'redux-saga/effects';
 // import {notification } from 'antd';
 
-import { login,logOut, loginSuccess, logOutSuccess, loginError, register ,registerError,re} from './slice';
+import { login,logOut, loginSuccess, logOutSuccess, loginError, register ,registerError,getUser,getUserSuccess} from './slice';
 import AuthRepository from '../../repositories/AuthRepository';
 import Router from "next/router";
 
-// const modalSuccess = type => {
-//     notification[type]({
-//         message: 'Wellcome back',
-//         description: 'You are login successful!',
-//     });
-// };
-
-// const modalWarning = type => {
-//     notification[type]({
-//         message: 'Good bye!',
-//         description: 'Your account has been logged out!',
-//     });
-// };
 
 function* loginSaga(action) {
     try {
@@ -53,8 +40,22 @@ function* registerSaga(action) {
         yield put(registerError(err.response.data.error))
     }
 }
+
+    function* getUserSaga(action){
+        try {
+            const {payload} = action;
+
+            const data = yield call(AuthRepository.getUser,payload);
+            console.log(data)
+            yield put(getUserSuccess(data))
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
 export default function* rootSaga() {
     yield all([takeEvery(login.type, loginSaga)]);
     yield all([takeEvery(logOut.type, logOutSaga)]);
     yield all([takeEvery(register.type, registerSaga)]);
+    yield all([takeEvery(getUser.type, getUserSaga)]);
 }

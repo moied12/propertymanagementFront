@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { addResidential, addResidentialStart } from '../../store/properties/slice';
+import { addCommercial, addCommercialStart } from '../../store/properties/slice';
 import { Form, Input } from 'antd';
 import { connect } from 'react-redux';
 import { getCity, getRent, getStatus, getType1 } from '../../store/rtsc/slice';
@@ -8,9 +8,7 @@ import { storage } from '../../firebase';
 import { Rings } from 'react-loader-spinner';
 import TextArea from 'antd/lib/input/TextArea';
 import { Fade } from 'react-slideshow-image';
-import { getUser } from '../../store/auth/slice';
-import { privateRoute } from '../privateroute';
-class AddResidential extends Component {
+class AddCommercial extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -20,8 +18,6 @@ class AddResidential extends Component {
             description: "",
             price: "",
             name: "",
-            beds: "",
-            baths: "",
             area: "",
             furnished: false,
             location: "",
@@ -42,8 +38,6 @@ class AddResidential extends Component {
         description: "",
         price: "",
         name: "",
-        beds: "",
-        baths: "",
         area: "",
         furnished: false,
         location: "",
@@ -63,7 +57,7 @@ class AddResidential extends Component {
         this.props.dispatch(getRent());
         this.props.dispatch(getStatus());
         this.props.dispatch(getType1());
-        this.props.dispatch(getUser(this.props.data));
+
     }
     buildImgTag() {
         return this.state.imageArray.length != 0 ? (<div className="slide-container  item19" >
@@ -125,7 +119,7 @@ class AddResidential extends Component {
 
     }
 
-    handleaddresidentialsubmit = () => {
+    handleaddCommercialsubmit = () => {
         this.setState({ uploading: true }, () => {
             var result = Promise.all(
                 this.state.image.map(async (element) => {
@@ -136,9 +130,9 @@ class AddResidential extends Component {
             )
             result.then(data =>
                 this.setState({ urls: data }, () => {
-                    this.props.dispatch(addResidentialStart());
+                    this.props.dispatch(addCommercialStart());
                     let propertydetails = JSON.parse(JSON.stringify({ ...this.state, imageArray: null }));
-                    this.props.dispatch(addResidential(propertydetails));
+                    this.props.dispatch(addCommercial(propertydetails));
                     this.setState(this.initalstate);
                 })
             );
@@ -175,21 +169,20 @@ class AddResidential extends Component {
 
     render() {
         const imgTag = this.buildImgTag();
-        console.log(this.props.user)
         return (
             !this.state.uploading ? (
                 // !this.state.uploading ?
                 <div className="ps-my-account">
                     <div className="container">
 
-                        {imgTag}
                         <Form
                             className="ps-form--account"
-                            onFinish={this.handleaddresidentialsubmit.bind(this)}>
+                            onFinish={this.handleaddCommercialsubmit.bind(this)}>
 
-                            <div className="grid-container">
-                                <div className="item1"><h1>Add Residential Property</h1></div>
+                            <div className="grid-containerc">
+                                <div className="item1"><h1>Add Commercial Property</h1></div>
 
+                                {imgTag}
                                 <div className='item13' style={{ height: 'inherit' }}>
                                     <Select options={this.props.city} placeholder="City"
                                         onChange={this.handleChangecity}>
@@ -237,34 +230,6 @@ class AddResidential extends Component {
                                             onChange={this.handleChange} />
                                     </Form.Item>
                                 </div>
-
-
-                                <div className="item5">
-                                    <Form.Item name="beds" rules={[{ required: true, },]}>
-                                        <Input
-                                            name="beds"
-                                            value={this.state.beds}
-                                            className="form-control"
-                                            type="number"
-                                            placeholder="Number of Bedrooms"
-                                            onChange={this.handleChange} />
-                                    </Form.Item>
-                                </div>
-
-
-                                <div className="item6">
-                                    <Form.Item name="baths" rules={[{ required: true, },]}>
-                                        <Input
-                                            name="baths"
-                                            value={this.state.baths}
-                                            className="form-control"
-                                            type="number"
-                                            placeholder="Number of Bathrooms"
-                                            onChange={this.handleChange} />
-                                    </Form.Item>
-                                </div>
-
-
                                 <div className="item7">
                                     <Form.Item name="area" rules={[{ required: true, },]}>
                                         <Input
@@ -304,7 +269,7 @@ class AddResidential extends Component {
                                             value={this.state.user_id}
                                             className="form-control"
                                             type="text"
-                                            placeholder="user id"
+                                            placeholder="User Id"
                                             onChange={this.handleChange} />
                                     </Form.Item>
                                 </div>
@@ -373,10 +338,6 @@ class AddResidential extends Component {
     }
 }
 const mapStateToProps = state => {
-    // return state.rtsc;
-    return {
-        rtsc: state.rtsc,
-        user: state.user,
-    };
+    return state.rtsc;
 };
-export default connect(mapStateToProps)(privateRoute(AddResidential));
+export default connect(mapStateToProps)(AddCommercial);

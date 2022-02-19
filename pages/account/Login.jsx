@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Router from 'next/router';
 import { login,loginErrorReset } from '../../store/auth/slice';
 
-import { Form, Input, notification } from 'antd';
+import { Form, Input } from 'antd';
 import { connect } from 'react-redux';
 
 class Login extends Component {
@@ -41,33 +41,12 @@ class Login extends Component {
     render() {
         const {error} = this.props;
         return (
-            <div className="ps-my-account">
-                <div className="container">
+            <div className='loginpage'>
                     <Form
-                        className="ps-form--account"
-                        onFinish={this.handleLoginSubmit.bind(this)}>
-                        <ul className="ps-tab-list">
-                        <li >
-                                <Link href="/">
-                                    <a>Index</a>
-                                </Link>
-                            </li>
-                            <li className="active">
-                                <Link href="/account/login">
-                                    <a>Login</a>
-                                </Link>
-                            </li>
-                            <li>
-                                <Link href="/account/register">
-                                    <a>Register</a>
-                                </Link>
-                            </li>
-                        </ul>
-                        <div className="ps-tab active" id="sign-in">
-                            <div className="ps-form__content">
-                                <h5>Log In Your Account</h5>
-                                <div className="form-group">
-                                    <Form.Item
+                        onFinish={this.handleLoginSubmit.bind(this)} className='card'>
+                        <div class="grid-container1">
+                            <div class='item1'>LOGIN</div>
+                            <div class='item2'>   <Form.Item
                                         name="username"
                                         rules={[
                                             {
@@ -85,10 +64,8 @@ class Login extends Component {
                                             onChange={this.handleChange}    
 
                                         />
-                                    </Form.Item>
-                                </div>
-                                <div className="form-group form-forgot">
-                                    <Form.Item
+                                    </Form.Item></div>
+                                    <div class='item3'> <Form.Item
                                         name="password"
                                         rules={[
                                             {
@@ -106,37 +83,23 @@ class Login extends Component {
                                             placeholder="Password..."
                                         />
                                     </Form.Item>
-                                </div>
                                 {error!='false'  ? (
                                         <div style={{color:'red'}}>{error}</div>
                                     ) : (
                                         <div></div>
                                     )}
-                                <div className="form-group">
-                                    <div className="ps-checkbox">
-                                        <input
-                                            className="form-control"
-                                            type="checkbox"
-                                            id="remember-me"
-                                            name="remember-me"
-                                        />
-                                        <label htmlFor="remember-me">
-                                            Rememeber me
-                                        </label>
-                                    </div>
+                                
+                                
+                           
                                 </div>
-                                <div className="form-group submit">
-                                    <button
-                                        type="submit"
-                                        className="ps-btn ps-btn--fullwidth">
+                                <div class='item4'>
+                                    <button type="submit" >
                                         Login
                                     </button>
                                 </div>
-                            </div>
-                           
-                        </div>
+                                </div>
                     </Form>
-                </div>
+   
             </div>
         );
     }

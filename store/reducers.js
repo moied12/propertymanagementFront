@@ -1,10 +1,13 @@
 import { combineReducers } from 'redux'
 
-import count from './count/countSlice'
-import auth from './auth/slice'
+import auth from './auth/slice';
+import property from "./properties/slice";
+import rtsc from "./rtsc/slice"
 
 const reducers = combineReducers({ 
-  count,auth
+ auth,
+ property,
+rtsc
 })
 
 export default reducers;

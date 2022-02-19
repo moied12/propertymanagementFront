@@ -16,3 +16,4 @@ export const redirectToLogin = (server) => {
     Router.push(login);
   }
 };
+

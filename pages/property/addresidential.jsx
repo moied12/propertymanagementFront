@@ -9,7 +9,6 @@ import { Rings } from 'react-loader-spinner';
 import TextArea from 'antd/lib/input/TextArea';
 import { Fade } from 'react-slideshow-image';
 import { getUser } from '../../store/auth/slice';
-import { privateRoute } from '../privateroute';
 class AddResidential extends Component {
     constructor(props) {
         super(props);
@@ -63,24 +62,26 @@ class AddResidential extends Component {
         this.props.dispatch(getRent());
         this.props.dispatch(getStatus());
         this.props.dispatch(getType1());
-        this.props.dispatch(getUser(this.props.data));
+        this.props.dispatch(getUser());
+        
+        
+
     }
     buildImgTag() {
-        return this.state.imageArray.length != 0 ? (<div className="slide-container  item19" >
-            <Fade>
-                {
-                    this.state.imageArray.map((imageURI, index) => (
-                        <div className="each-fade" key={index}>
-                            <div className="image-container">
-                                <img className="photo-uploaded" src={imageURI} alt="Photo uploaded" />
-                            </div>
+        return   this.state.imageArray.length!=0?(<div className="slide-container  item19" >
+        <Fade>
+            {
+                this.state.imageArray.map((imageURI,index) => (
+                    <div className="each-fade" key={index}>
+            <div className="image-container">
+                        <img className="photo-uploaded" src={imageURI} alt="Photo uploaded" />
                         </div>
-                    ))
-                }
+          </div>
+                ))
+            }
             </Fade>
-        </div>
-        ) : <></>
-    }
+    </div>
+    ):<></>}
     readURI(e) {
         if (e.target.files) {
             const files = Array.from(e.target.files);
@@ -175,14 +176,15 @@ class AddResidential extends Component {
 
     render() {
         const imgTag = this.buildImgTag();
-        console.log(this.props.user)
+        
+        console.log(this.props.data)
         return (
-            !this.state.uploading ? (
+            !this.state.uploading?(
                 // !this.state.uploading ?
                 <div className="ps-my-account">
                     <div className="container">
 
-                        {imgTag}
+                    {imgTag}
                         <Form
                             className="ps-form--account"
                             onFinish={this.handleaddresidentialsubmit.bind(this)}>
@@ -304,7 +306,7 @@ class AddResidential extends Component {
                                             value={this.state.user_id}
                                             className="form-control"
                                             type="text"
-                                            placeholder="user id"
+                                            placeholder="User Id"
                                             onChange={this.handleChange} />
                                     </Form.Item>
                                 </div>
@@ -322,7 +324,7 @@ class AddResidential extends Component {
                                     </Form.Item>
                                 </div>
                                 <div className="item15">
-                                    <Form.Item name="description" rules={[{ required: true, },]}>
+                                    <Form.Item  name="description" rules={[{ required: true, },]}>
                                         <TextArea
                                             name="description"
                                             value={this.state.onPlan}
@@ -363,20 +365,16 @@ class AddResidential extends Component {
                     </div>
                 </div>
                 // : <Rings color="#00BFFF" height={80} width={80} />
-            ) :
-                (<div className='ps-my-account'>
-                    <div className='centercontent'>
-                        <Rings style={{ textAlign: 'center' }} color="#00BFFF" height={300} width={300} />
-                    </div>
-                    <h1 className='centercontenttext' style={{ textAlign: 'center' }}>Please wait while the property is added.</h1></div>)
+            ):
+            (<div className='ps-my-account'>
+                <div className='centercontent'>
+                    <Rings style={{ textAlign: 'center' }} color="#00BFFF" height={300} width={300} />
+                </div>
+                <h1 className='centercontenttext' style={{ textAlign: 'center' }}>Please wait while the property is added.</h1></div>)
         )
     }
 }
 const mapStateToProps = state => {
-    // return state.rtsc;
-    return {
-        rtsc: state.rtsc,
-        user: state.user,
-    };
+    return state.rtsc;
 };
-export default connect(mapStateToProps)(privateRoute(AddResidential));
+export default connect(mapStateToProps)(AddResidential);

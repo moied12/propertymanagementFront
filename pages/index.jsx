@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react'
 import Index from './home/index'
-
+import { privateRoute } from './privateroute'
 
 class IndexPage extends Component{
 render(){
@@ -13,4 +13,4 @@ render(){
 }
 }
 
-export default IndexPage
+export default (privateRoute(IndexPage))

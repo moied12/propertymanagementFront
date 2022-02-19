@@ -51,11 +51,28 @@ async registerRequest(payload) {
     //  withCredentials: true, 
     //  credentials: 'include'
   }).then(res => {
-    console.log(res.data);
       return res.data
     });
     return reponse;
   }
+
+  async getUser(payload) {
+    const reponse  = await axios.get(`${apiUrl}/user/profile`, 
+    {
+      params: {
+        data: payload
+      }
+    },
+   { 
+    "Access-Control-Allow-Origin": "http://localhost:3000/account/register",
+   'Content-Type':'application/json',
+  //  withCredentials: true, 
+  //  credentials: 'include'
+}).then(res => {
+    return res.data
+  });
+  return reponse;
+}
 }
 
 export default new AuthRespository();
