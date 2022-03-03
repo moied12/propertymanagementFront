@@ -175,7 +175,6 @@ class AddResidential extends Component {
 
     render() {
         const imgTag = this.buildImgTag();
-        console.log(this.props.user)
         return (
             !this.state.uploading ? (
                 // !this.state.uploading ?

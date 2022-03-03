@@ -86,7 +86,6 @@ class PropertyRepository {
     }
 
     async editResidential(payload){
-      console.log(payload);
       const reponse  = await axios.put(`${apiUrl}/residential/${payload.id}`, 
        payload,
        { 
@@ -100,7 +99,6 @@ class PropertyRepository {
       return reponse;
     }
     async editCommercial(payload){
-      console.log(payload);
       const reponse  = await axios.put(`${apiUrl}/commercial/${payload.id}`, 
        payload,
        { 

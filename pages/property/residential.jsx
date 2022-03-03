@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { getAllResidential } from '../../store/properties/slice';
 import { privateRoute } from '../privateroute';
 import ResidentialCards from '../../components/residentialcards';
-import { CardGroup } from 'react-bootstrap';
+import { CardGroup ,Row} from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 
 
@@ -31,11 +31,27 @@ class Residential extends Component {
                     HELLO
                 </> : <div>
 
-                    <div className='header'>
-                    <h1>Residential</h1>
-                    <Link href="/property/addresidential"><Button variant="primary">ADD</Button></Link> 
+                <div className="headingc">
+                    <div className="leftside">
+                        <div className="logoc">
+                    All Residential Properties
+                        </div>
                     </div>
-                    <CardGroup>
+                    <div className="rightside">
+                    <Button
+                    variant="primary"
+                    // color="danger"
+                    size="medium"
+                    style={{ marginLeft: 16 }}
+                    onClick={() => {
+                       Router.push('/property/addresidential')
+                    }}
+                >
+                    Add Property
+                </Button>
+                    </div>
+                </div>
+                <Row xs={1} md={2} lg={3} className="g-4">
 
                         {
 
@@ -49,7 +65,7 @@ class Residential extends Component {
                             )
 
                         }
-                    </CardGroup>
+                    </Row>
 
 
                 </div>

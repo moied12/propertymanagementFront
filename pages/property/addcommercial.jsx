@@ -8,6 +8,8 @@ import { storage } from '../../firebase';
 import { Rings } from 'react-loader-spinner';
 import TextArea from 'antd/lib/input/TextArea';
 import { Fade } from 'react-slideshow-image';
+import { getUser } from '../../store/auth/slice';
+import { privateRoute } from '../privateroute';
 class AddCommercial extends Component {
     constructor(props) {
         super(props);
@@ -57,7 +59,7 @@ class AddCommercial extends Component {
         this.props.dispatch(getRent());
         this.props.dispatch(getStatus());
         this.props.dispatch(getType1());
-
+        this.props.dispatch(getUser(this.props.data));
     }
     buildImgTag() {
         return this.state.imageArray.length != 0 ? (<div className="slide-container  item19" >
@@ -131,7 +133,7 @@ class AddCommercial extends Component {
             result.then(data =>
                 this.setState({ urls: data }, () => {
                     this.props.dispatch(addCommercialStart());
-                    let propertydetails = JSON.parse(JSON.stringify({ ...this.state, imageArray: null }));
+                    let propertydetails = JSON.parse(JSON.stringify({ ...this.state, imageArray: null, user_id:this.props.auth.user.id }));
                     this.props.dispatch(addCommercial(propertydetails));
                     this.setState(this.initalstate);
                 })
@@ -184,25 +186,25 @@ class AddCommercial extends Component {
 
                                 {imgTag}
                                 <div className='item13' style={{ height: 'inherit' }}>
-                                    <Select options={this.props.city} placeholder="City"
+                                    <Select options={this.props.rtsc.city} placeholder="City"
                                         onChange={this.handleChangecity}>
                                     </Select>
                                 </div>
 
                                 <div className='item9' style={{ height: 'inherit' }}>
-                                    <Select options={this.props.status} placeholder="Status"
+                                    <Select options={this.props.rtsc.status} placeholder="Status"
                                         onChange={this.handleChangestatus}>
                                     </Select>
                                 </div>
 
                                 <div className='item3' style={{ height: 'inherit' }}>
-                                    <Select options={this.props.rent} placeholder="Rent Duration or Buy"
+                                    <Select options={this.props.rtsc.rent} placeholder="Rent Duration or Buy"
                                         onChange={this.handleChangerent}>
                                     </Select>
                                 </div>
 
                                 <div className='item10' style={{ height: 'inherit' }}>
-                                    <Select options={this.props.type} placeholder="Property Type"
+                                    <Select options={this.props.rtsc.type} placeholder="Property Type"
                                         onChange={this.handleChangetype}>
                                     </Select>
                                 </div>
@@ -262,7 +264,7 @@ class AddCommercial extends Component {
                                 </div>
 
 
-                                <div className="item11">
+                                {/* <div className="item11">
                                     <Form.Item name="user_id" rules={[{ required: true, },]}>
                                         <Input
                                             name="user_id"
@@ -272,7 +274,7 @@ class AddCommercial extends Component {
                                             placeholder="User Id"
                                             onChange={this.handleChange} />
                                     </Form.Item>
-                                </div>
+                                </div> */}
 
 
                                 <div className="item12">
@@ -338,6 +340,10 @@ class AddCommercial extends Component {
     }
 }
 const mapStateToProps = state => {
-    return state.rtsc;
+    // return state.rtsc;
+    return {
+        rtsc: state.rtsc,
+        auth: state.auth,
+    };
 };
-export default connect(mapStateToProps)(AddCommercial);
+export default connect(mapStateToProps)(privateRoute(AddCommercial));

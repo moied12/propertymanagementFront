@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Carousel } from 'react-bootstrap';
-import { Card, Button } from 'react-bootstrap';
+import { Card, Button ,Col} from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { Fade } from 'react-slideshow-image';
 import Link from 'next/link'
@@ -14,18 +14,14 @@ class ResidentialCards extends Component {
         const { property } = this.props;
         const imageArray = property.images.replace(/[\[\]']+/g, '').replace(/["]+/g, "").replace(/\\/g, '').split(",")
         return (
-            <Card style={{width:'100rem', padding:"10px"}}>
-                <Carousel>
+            <Col>
+            <Card style={{ width: '18rem' , borderRadius:"5%" , margin:'auto' , backgroundColor:'rgb(230,230,230)', padding:'10px'}}>
+                <Carousel className='card-img-top'>
                     {
                         imageArray.map((imageURI, index) => (
 
                             <Carousel.Item key={index}>
-                                <div className="d-block w-100" >
-                                    <div >
-                                        <img src={imageURI} alt="Photo uploaded" />
-                                    </div>
-                                </div>
-
+                                        <img  src={imageURI} alt="Photo uploaded" height="161px" style={{borderRadius:"5%", width:'inherit'}} />
                             </Carousel.Item>
                         ))
                     }
@@ -44,6 +40,7 @@ class ResidentialCards extends Component {
                     <Button variant="danger">DELETE</Button>
                 </Card.Body>
             </Card>
+            </Col>
         );
     }
 }

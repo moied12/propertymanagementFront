@@ -6,8 +6,7 @@ import { DataGrid, GridApi, Record } from '@mui/x-data-grid';
 import { Button} from 'react-bootstrap';
 import Router from 'next/router'
 import { Rings } from 'react-loader-spinner';
-import { PersonAdd } from '@material-ui/icons';
-class Users extends Component {
+class Sales extends Component {
     constructor(props) {
         super(props);
     }
@@ -17,41 +16,6 @@ class Users extends Component {
     componentDidMount() {
         this.props.dispatch(getallUser(this.props.data));
     }
-    renderDetailsButton = (params) => {
-        return (
-            <strong>
-                <Button
-                    variant="primary"
-                    // color="primary"
-                    size="small"
-                    style={{ marginLeft: 16 }}
-                    onClick={() => {
-                        Router.push(`/user/${params.row.id}`)
-                    }}
-                >
-                    More Info
-                </Button>
-            </strong>
-        )
-    }
-    renderDeleteButton = (params) => {
-        return (
-            <strong>
-                <Button
-                    variant="danger"
-                    // color="danger"
-                    size="small"
-                    style={{ marginLeft: 16 }}
-                    onClick={() => {
-                        this.props.dispatch(deleteUser(params.row.id))
-                       
-                    }}
-                >
-                    Delete
-                </Button>
-            </strong>
-        )
-    }
 
     render() {
         
@@ -60,20 +24,6 @@ class Users extends Component {
             { field: 'name', headerName: 'Name', width: 130 },
             { field: 'email', headerName: 'Email', width: 130 },
             { field: 'phone', headerName: 'Phone', type: 'number', width: 90, },
-            {
-                field: 'col5',
-                headerName: 'Learn More',
-                width: 150,
-                renderCell: this.renderDetailsButton,
-                disableClickEventBubbling: true,
-            },
-            {
-                field: 'col7',
-                headerName: 'Delete User',
-                width: 150,
-                renderCell: this.renderDeleteButton,
-                disableClickEventBubbling: true,
-            },
         ]
         if (this.props.user.alluser){
         return (
@@ -81,7 +31,7 @@ class Users extends Component {
                 <div className="headingc">
                     <div className="leftside">
                         <div className="logoc">
-                    All Users
+                    All Sales
                         </div>
                     </div>
                     <div className="rightside">
@@ -94,9 +44,18 @@ class Users extends Component {
                        Router.push('/user/adduser')
                     }}
                 >
-                     <PersonAdd className='sidebarIcon' />
-                    Add User
-                   
+                    Add Residential Sale
+                </Button>
+                <Button
+                    variant="primary"
+                    // color="danger"
+                    size="medium"
+                    style={{ marginLeft: 16 }}
+                    onClick={() => {
+                       Router.push('/user/adduser')
+                    }}
+                >
+                    Add Commercial Sale
                 </Button>
                     </div>
                 </div>
@@ -127,5 +86,5 @@ const mapStateToProps = state => {
         user: state.auth,
     };
 };
-export default connect(mapStateToProps)(privateRoute(Users));
+export default connect(mapStateToProps)(privateRoute(Sales));
 

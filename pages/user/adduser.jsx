@@ -19,7 +19,7 @@ class Register extends Component {
     }
 
     static getDerivedStateFromProps(props) {
-        if (props.isLoggedIn === true) {
+        if (props.isLoggedIn != true) {
             Router.push('/');
         }
         return false;
@@ -48,18 +48,6 @@ class Register extends Component {
                     <Form
                         className="ps-form--account"
                         onFinish={this.handleRegisterSubmit.bind(this)}>
-                        <ul className="ps-tab-list">
-                            <li>
-                                <Link href="/account/login">
-                                    <a>Login</a>
-                                </Link>
-                            </li>
-                            <li  className="active">
-                                <Link href="/account/register">
-                                    <a>Register</a>
-                                </Link>
-                            </li>
-                        </ul>
                         <div className="ps-tab active" id="sign-in">
                             <div className="ps-form__content">
                                 <h5>Log In Your Account</h5>
@@ -151,24 +139,12 @@ class Register extends Component {
                                     ) : (
                                         <div></div>
                                     )}
-                                <div className="form-group">
-                                    <div className="ps-checkbox">
-                                        <input
-                                            className="form-control"
-                                            type="checkbox"
-                                            id="remember-me"
-                                            name="remember-me"
-                                        />
-                                        <label htmlFor="remember-me">
-                                            Rememeber me
-                                        </label>
-                                    </div>
-                                </div>
+                             
                                 <div className="form-group submit">
                                     <button
                                         type="submit"
                                         className="ps-btn ps-btn--fullwidth">
-                                        Login
+                                        Register User
                                     </button>
                                 </div>
                             </div>

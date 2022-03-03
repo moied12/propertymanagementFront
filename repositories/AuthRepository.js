@@ -57,14 +57,9 @@ async registerRequest(payload) {
   }
 
   async getUser(payload) {
-    const reponse  = await axios.get(`${apiUrl}/user/profile`, 
-    {
-      params: {
-        data: payload
-      }
-    },
-   { 
-    "Access-Control-Allow-Origin": "http://localhost:3000/account/register",
+    const reponse  = await axios.get(`${apiUrl}/user/profile/${payload}`, 
+   {  
+    "Access-Control-Allow-Origin": "http://localhost:3000",
    'Content-Type':'application/json',
   //  withCredentials: true, 
   //  credentials: 'include'
@@ -73,6 +68,33 @@ async registerRequest(payload) {
   });
   return reponse;
 }
+async getallUser(payload) {
+  const reponse  = await axios.get(`${apiUrl}/user/all/${payload}`, 
+ {  
+  "Access-Control-Allow-Origin": "http://localhost:3000",
+ 'Content-Type':'application/json',
+//  withCredentials: true, 
+//  credentials: 'include'
+}).then(res => {
+  return res.data
+});
+return reponse;
+}
+
+async deleteRequest(payload) {
+  const reponse = await axios.delete(`${apiUrl}/user/${payload}`,
+    {
+      "Access-Control-Allow-Origin": "http://localhost:3000",
+      'Content-Type': 'application/json',
+      //  withCredentials: true, 
+      //  credentials: 'include'
+    }).then(res => {
+      return res.data
+    });
+  return reponse;
+}
+
+
 }
 
 export default new AuthRespository();

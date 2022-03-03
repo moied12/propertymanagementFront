@@ -1,13 +1,13 @@
+// viewing all customers, searching , sorting, filtering
 import React, { Component } from 'react';
 import { privateRoute } from '../privateroute';
-import { getallUser,deleteUser } from '../../store/auth/slice'
+import { getallUser,deleteUser } from '../../store/customers/slice'
 import { connect } from 'react-redux';
 import { DataGrid, GridApi, Record } from '@mui/x-data-grid';
 import { Button} from 'react-bootstrap';
 import Router from 'next/router'
 import { Rings } from 'react-loader-spinner';
-import { PersonAdd } from '@material-ui/icons';
-class Users extends Component {
+class Customers extends Component {
     constructor(props) {
         super(props);
     }
@@ -26,7 +26,7 @@ class Users extends Component {
                     size="small"
                     style={{ marginLeft: 16 }}
                     onClick={() => {
-                        Router.push(`/user/${params.row.id}`)
+                       Router.push(`/user/${params.row.id}`)
                     }}
                 >
                     More Info
@@ -42,9 +42,10 @@ class Users extends Component {
                     // color="danger"
                     size="small"
                     style={{ marginLeft: 16 }}
-                    onClick={() => {
-                        this.props.dispatch(deleteUser(params.row.id))
-                       
+                    onClick={ 
+                        // this.props.dispatch(register(params.row.id))
+                        () => {
+                            this.props.dispatch(deleteUser(params.row.id))
                     }}
                 >
                     Delete
@@ -54,12 +55,12 @@ class Users extends Component {
     }
 
     render() {
-        
         const columns= [
             { field: 'id', headerName: 'ID', width: 70 },
-            { field: 'name', headerName: 'Name', width: 130 },
-            { field: 'email', headerName: 'Email', width: 130 },
-            { field: 'phone', headerName: 'Phone', type: 'number', width: 90, },
+            { field: 'firstName', headerName: 'First Name', width: 130 },
+            { field: 'lastName', headerName: 'Last Name', width: 130 },
+            { field: 'email', headerName: 'Email', width: 170 },
+            { field: 'phone', headerName: 'Phone', type: 'number', width: 110, },
             {
                 field: 'col5',
                 headerName: 'Learn More',
@@ -81,7 +82,7 @@ class Users extends Component {
                 <div className="headingc">
                     <div className="leftside">
                         <div className="logoc">
-                    All Users
+                    All Customers
                         </div>
                     </div>
                     <div className="rightside">
@@ -91,26 +92,25 @@ class Users extends Component {
                     size="medium"
                     style={{ marginLeft: 16 }}
                     onClick={() => {
-                       Router.push('/user/adduser')
+                       Router.push('/customer/addcustomer')
                     }}
                 >
-                     <PersonAdd className='sidebarIcon' />
-                    Add User
-                   
+                    Add Customer
                 </Button>
                     </div>
                 </div>
-                <div style={{ height: 400, width: '100%' }}>
+                <div style={{ height: 500, width: '100%' }}>
                     <DataGrid
                         rows={this.props.user.alluser}
                         columns={columns}
-                        pageSize={5}
-                        rowsPerPageOptions={[5]}
+                        pageSize={7}
+                        rowsPerPageOptions={[7]}
                         checkboxSelection
                     />
                 </div>
             </div>
-        )}else{
+        )}
+        else{
             return (
                 <div className='ps-my-account'>
                     <div className='centercontent'>
@@ -122,10 +122,11 @@ class Users extends Component {
     }
 }
 const mapStateToProps = state => {
+    
     return {
         rtsc: state.rtsc,
-        user: state.auth,
+        user: state.customer,
     };
 };
-export default connect(mapStateToProps)(privateRoute(Users));
+export default connect(mapStateToProps)(privateRoute(Customers));
 

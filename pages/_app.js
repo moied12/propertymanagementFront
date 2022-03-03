@@ -10,7 +10,8 @@ import css from "./style.css"
 import { persistStore } from 'redux-persist'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import 'react-slideshow-image/dist/styles.css';
-import Navbar from '../components/navbar';
+import Topbar  from "../components/topbar/topbar";
+import  Sidebar  from "../components/sidebar/Sidebar";
 
 class App extends NextApp {
 
@@ -42,8 +43,15 @@ class App extends NextApp {
           <PersistGate
             loading={<Component {...pageProps} />}
             persistor={this.persistor}>
-              <Navbar/>
-              <Component {...pageProps} />
+            <div className="appcontainer">
+              <Sidebar/>
+              <div className="others">
+
+                <Topbar />
+                <Component {...pageProps} />
+              </div>
+            </div>
+
           </PersistGate>
         </Provider>
       </>

@@ -56,6 +56,7 @@ function* addResidentialSaga(action) {
     try {
         const {payload} = action;
         const data = yield call(PropertyRepository.addResidential, payload);
+        Router.push('/property/residential');
     } catch (err) {
         yield console.log(err)
     }
@@ -63,7 +64,7 @@ function* addResidentialSaga(action) {
 function* addCommercialSaga(action) {
     try {
         const {payload} = action;
-        const data = yield call(PropertyRepository.editCommercial, payload);
+        const data = yield call(PropertyRepository.addCommercial, payload);
         Router.push('/property/commercial');
     } catch (err) {
         yield console.log(err)
@@ -79,8 +80,15 @@ function* editResidentialSaga(action){
         yield console.log(err)
     }
 }
-function* editCommercialSaga(action){}
-
+function* editCommercialSaga(action){
+    try {
+        const {payload} = action;
+        const data = yield call(PropertyRepository.editCommercial, payload);
+        Router.push('/property/commercial');
+    } catch (err) {
+        yield console.log(err)
+    }
+}
 function* getAllResidentialSaga() {
     try {
         const data = yield call(PropertyRepository.getallresidential);

@@ -9,6 +9,7 @@ import { Rings } from 'react-loader-spinner';
 import TextArea from 'antd/lib/input/TextArea';
 import { Fade } from 'react-slideshow-image';
 import { getUser } from '../../store/auth/slice';
+import { privateRoute } from '../privateroute';
 class AddResidential extends Component {
     constructor(props) {
         super(props);
@@ -62,26 +63,24 @@ class AddResidential extends Component {
         this.props.dispatch(getRent());
         this.props.dispatch(getStatus());
         this.props.dispatch(getType1());
-        this.props.dispatch(getUser());
-        
-        
-
+        this.props.dispatch(getUser(this.props.data));
     }
     buildImgTag() {
-        return   this.state.imageArray.length!=0?(<div className="slide-container  item19" >
-        <Fade>
-            {
-                this.state.imageArray.map((imageURI,index) => (
-                    <div className="each-fade" key={index}>
-            <div className="image-container">
-                        <img className="photo-uploaded" src={imageURI} alt="Photo uploaded" />
+        return this.state.imageArray.length != 0 ? (<div className="slide-container  item19" >
+            <Fade>
+                {
+                    this.state.imageArray.map((imageURI, index) => (
+                        <div className="each-fade" key={index}>
+                            <div className="image-container">
+                                <img className="photo-uploaded" src={imageURI} alt="Photo uploaded" />
+                            </div>
                         </div>
-          </div>
-                ))
-            }
+                    ))
+                }
             </Fade>
-    </div>
-    ):<></>}
+        </div>
+        ) : <></>
+    }
     readURI(e) {
         if (e.target.files) {
             const files = Array.from(e.target.files);
@@ -138,7 +137,7 @@ class AddResidential extends Component {
             result.then(data =>
                 this.setState({ urls: data }, () => {
                     this.props.dispatch(addResidentialStart());
-                    let propertydetails = JSON.parse(JSON.stringify({ ...this.state, imageArray: null }));
+                    let propertydetails = JSON.parse(JSON.stringify({ ...this.state, imageArray: null ,user_id:this.props.auth.user.id}));
                     this.props.dispatch(addResidential(propertydetails));
                     this.setState(this.initalstate);
                 })
@@ -176,15 +175,13 @@ class AddResidential extends Component {
 
     render() {
         const imgTag = this.buildImgTag();
-        
-        console.log(this.props.data)
         return (
-            !this.state.uploading?(
+            !this.state.uploading ? (
                 // !this.state.uploading ?
                 <div className="ps-my-account">
                     <div className="container">
 
-                    {imgTag}
+                        {imgTag}
                         <Form
                             className="ps-form--account"
                             onFinish={this.handleaddresidentialsubmit.bind(this)}>
@@ -193,25 +190,25 @@ class AddResidential extends Component {
                                 <div className="item1"><h1>Add Residential Property</h1></div>
 
                                 <div className='item13' style={{ height: 'inherit' }}>
-                                    <Select options={this.props.city} placeholder="City"
+                                    <Select options={this.props.rtsc.city} placeholder="City"
                                         onChange={this.handleChangecity}>
                                     </Select>
                                 </div>
 
                                 <div className='item9' style={{ height: 'inherit' }}>
-                                    <Select options={this.props.status} placeholder="Status"
+                                    <Select options={this.props.rtsc.status} placeholder="Status"
                                         onChange={this.handleChangestatus}>
                                     </Select>
                                 </div>
 
                                 <div className='item3' style={{ height: 'inherit' }}>
-                                    <Select options={this.props.rent} placeholder="Rent Duration or Buy"
+                                    <Select options={this.props.rtsc.rent} placeholder="Rent Duration or Buy"
                                         onChange={this.handleChangerent}>
                                     </Select>
                                 </div>
 
                                 <div className='item10' style={{ height: 'inherit' }}>
-                                    <Select options={this.props.type} placeholder="Property Type"
+                                    <Select options={this.props.rtsc.type} placeholder="Property Type"
                                         onChange={this.handleChangetype}>
                                     </Select>
                                 </div>
@@ -298,7 +295,7 @@ class AddResidential extends Component {
                                     </Form.Item>
                                 </div>
 
-
+{/* 
                                 <div className="item11">
                                     <Form.Item name="user_id" rules={[{ required: true, },]}>
                                         <Input
@@ -306,10 +303,10 @@ class AddResidential extends Component {
                                             value={this.state.user_id}
                                             className="form-control"
                                             type="text"
-                                            placeholder="User Id"
+                                            placeholder="user id"
                                             onChange={this.handleChange} />
                                     </Form.Item>
-                                </div>
+                                </div> */}
 
 
                                 <div className="item12">
@@ -324,7 +321,7 @@ class AddResidential extends Component {
                                     </Form.Item>
                                 </div>
                                 <div className="item15">
-                                    <Form.Item  name="description" rules={[{ required: true, },]}>
+                                    <Form.Item name="description" rules={[{ required: true, },]}>
                                         <TextArea
                                             name="description"
                                             value={this.state.onPlan}
@@ -365,16 +362,20 @@ class AddResidential extends Component {
                     </div>
                 </div>
                 // : <Rings color="#00BFFF" height={80} width={80} />
-            ):
-            (<div className='ps-my-account'>
-                <div className='centercontent'>
-                    <Rings style={{ textAlign: 'center' }} color="#00BFFF" height={300} width={300} />
-                </div>
-                <h1 className='centercontenttext' style={{ textAlign: 'center' }}>Please wait while the property is added.</h1></div>)
+            ) :
+                (<div className='ps-my-account'>
+                    <div className='centercontent'>
+                        <Rings style={{ textAlign: 'center' }} color="#00BFFF" height={300} width={300} />
+                    </div>
+                    <h1 className='centercontenttext' style={{ textAlign: 'center' }}>Please wait while the property is added.</h1></div>)
         )
     }
 }
 const mapStateToProps = state => {
-    return state.rtsc;
+    // return state.rtsc;
+    return {
+        rtsc: state.rtsc,
+        auth: state.auth,
+    };
 };
-export default connect(mapStateToProps)(AddResidential);
+export default connect(mapStateToProps)(privateRoute(AddResidential));

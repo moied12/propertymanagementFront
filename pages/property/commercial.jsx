@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { getAllCommercial } from '../../store/properties/slice';
 import { privateRoute } from '../privateroute';
 import CommercialCards from '../../components/commercialcards';
-import { CardGroup } from 'react-bootstrap';
+import { CardGroup, Row } from 'react-bootstrap';
 import { Button } from 'react-bootstrap';
 
 
@@ -30,9 +30,27 @@ class Commercial extends Component {
                 <>
                     HELLO
                 </> : <>
-                    <h1>Commercial</h1>
-                    <Link href="/property/editresidential"><Button variant="primary">ADD</Button></Link> 
-                    <CardGroup>
+                <div className="headingc">
+                    <div className="leftside">
+                        <div className="logoc">
+                    All Commercial Properties
+                        </div>
+                    </div>
+                    <div className="rightside">
+                    <Button
+                    variant="primary"
+                    // color="danger"
+                    size="medium"
+                    style={{ marginLeft: 16 }}
+                    onClick={() => {
+                       Router.push('/property/addcommercial')
+                    }}
+                >
+                    Add Property
+                </Button>
+                    </div>
+                </div>
+                <Row xs={1} md={2} lg={3} className="g-4">
 
                         {
 
@@ -45,7 +63,7 @@ class Commercial extends Component {
                             )
 
                         }
-                    </CardGroup>
+                    </Row>
 
 
                 </>
